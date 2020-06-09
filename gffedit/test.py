@@ -4,7 +4,9 @@ resultpath = './result.gff'
 result = list()
 with open(filepath) as f:
     for line in f.readlines():
-        arr = line.split()
+        columns = line.split(';')
+        first_column = columns[0]
+        arr = first_column.split("\t")
         if 'NODE' not in arr[0]:
             result.append(line)
             continue
@@ -13,7 +15,10 @@ with open(filepath) as f:
         except Exception:
             result.append(line)
             continue
-        result.append(' '.join(arr)+"\n")
+
+        columns[0] = "\t".join(arr)
+        line = ';'.join(columns)
+        result.append(line)
 
 with open(resultpath,'w') as f:
     f.writelines(result)
